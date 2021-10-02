@@ -1,3 +1,5 @@
+var is_start = false;
+
 var time = 0;
 //保存定时时间
 var pause = true;
@@ -63,7 +65,7 @@ function move(id) {
   var finish_flag = true;
   //设置游戏是否完成标志，true表示完成
   for (var k = 1; k < 9; ++k) {
-    if (d[k] !== k) {
+    if (d[k] !== k || is_start === false) {
       finish_flag = false;
       break;
       //如果大DIV保存的编号和它本身的编号不同，则表示还不是全部按照顺序排的，那么设置为false，跳出循环，后面不用再判断了，因为只要一个不符，就没完成游戏
@@ -123,7 +125,9 @@ function start() {
 //重置函数
 function reset() {
   time = 0; //把时间设置为0
+  is_start = false;
   random_d(); //把方块随机打乱函数
+  is_start = true;
   if (pause)
     //如果暂停，则开始计时
     start();
@@ -131,23 +135,32 @@ function reset() {
 
 //随机打乱方块函数，我们的思路是从第九块开始，随机生成一个数，然后他们两块对调一下
 function random_d() {
-  for (var i = 9; i > 1; --i) {
-    var to = parseInt(Math.random() * (i - 1) + 1); //产生随机数，范围为1到i，不能超出范围，因为没这个id的DIV
-    if (d[i] !== 0) {
-      document.getElementById('d' + d[i]).style.left = d_posXY[to][0] + 'px';
-      document.getElementById('d' + d[i]).style.top = d_posXY[to][1] + 'px';
-    }
-    //把当前的DIV位置设置为随机产生的DIV的位置
-    if (d[to] !== 0) {
-      document.getElementById('d' + d[to]).style.left = d_posXY[i][0] + 'px';
-      document.getElementById('d' + d[to]).style.top = d_posXY[i][1] + 'px';
-    }
-    //把随机产生的DIV的位置设置为当前的DIV的位置
-    var tem = d[to];
-    d[to] = d[i];
-    d[i] = tem;
+  // for (var i = 9; i > 1; --i) {
+  //   var to = parseInt(Math.random() * (i - 1) + 1); //产生随机数，范围为1到i，不能超出范围，因为没这个id的DIV
+  //   if (d[i] !== 0) {
+  //     document.getElementById('d' + d[i]).style.left = d_posXY[to][0] + 'px';
+  //     document.getElementById('d' + d[i]).style.top = d_posXY[to][1] + 'px';
+  //   }
+  //   //把当前的DIV位置设置为随机产生的DIV的位置
+  //   if (d[to] !== 0) {
+  //     document.getElementById('d' + d[to]).style.left = d_posXY[i][0] + 'px';
+  //     document.getElementById('d' + d[to]).style.top = d_posXY[i][1] + 'px';
+  //   }
+  //   //把随机产生的DIV的位置设置为当前的DIV的位置
+  //   var tem = d[to];
+  //   d[to] = d[i];
+  //   d[i] = tem;
     //然后把它们两个的DIV保存的编号对调一下
+  // }
+  random_move_times = parseInt(Math.random() * 1000) + 1;
+
+  for (var i = 1; i <= random_move_times; i++) {
+    for (var j = 1; j <= 8; j++) {
+      move(j);
+    }
   }
+
+
 }
 
 //初始化函数，页面加载的时候调用重置函数，重新开始

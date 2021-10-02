@@ -19,7 +19,7 @@ body {
 }
 /* 这是包裹所有元素的DIV，给他设置620px的宽和450px的高，这个大小可以设置为更大，但是不能小，至少要能包含里面所有的元素 */
 #game {
-  position: absolute;
+  position: relative;
   width: 450px;
   height: 450px;
   border-radius: 5px;
